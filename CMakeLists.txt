@@ -25,3 +25,5 @@ include(GNUInstallDirs)
 add_executable(arduboy-manager
   src/main.cpp
 )
+
+install(TARGETS arduboy-manager)

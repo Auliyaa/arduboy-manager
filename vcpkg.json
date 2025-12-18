@@ -1,6 +1,9 @@
 {
   "name": "arduboy-manager",
   "version": "1.0.0",
-  "dependencies": [],
+  "dependencies": [
+    { "name": "qtbase" },
+    { "name": "qttools", "features": ["designer"] }
+  ],
   "overrides": []
 }
