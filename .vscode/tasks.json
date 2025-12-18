@@ -3,36 +3,34 @@
 	"tasks": [
 		{
 			"label": "build (debug)",
-			"command": "make",
+			"command": "jom",
 			"args": [
-				"-j16",
 				"install"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build.debug"
 			},
 			"problemMatcher": [
-				"$gcc"
+				"$msCompile"
 			],
-			"group": "build"
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		},
 		{
 			"label": "build (release)",
-			"command": "make",
+			"command": "jom",
 			"args": [
-				"-j16",
 				"install"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build.release"
 			},
 			"problemMatcher": [
-				"$gcc"
+				"$msCompile"
 			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
+			"group": "build"
 		},
 		{
 			"label": "tests",

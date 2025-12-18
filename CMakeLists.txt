@@ -20,10 +20,19 @@ endif(WIN32)
 include(GNUInstallDirs)
 
 # --------------------------------------
+# dependencies
+# --------------------------------------
+find_package(Qt6Gui CONFIG REQUIRED)
+
+# --------------------------------------
 # arduboy-manager
 # --------------------------------------
 add_executable(arduboy-manager
   src/main.cpp
+)
+
+target_link_libraries(arduboy-manager
+  Qt6::Gui
 )
 
 install(TARGETS arduboy-manager)
