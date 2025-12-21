@@ -24,8 +24,15 @@ GameWidget::GameWidget(QString id, QWidget* parent, Qt::WindowFlags f)
     "app.hex"
   });
 
-  QPixmap px(_bannerPath);
-  _ui->banner->setPixmap(px);
+  if (QFile(_bannerPath).exists())
+  {
+    QPixmap px(_bannerPath);
+    _ui->banner->setPixmap(px);
+  }
+  else
+  {
+    _ui->banner->setText(id);
+  }
 }
 
 GameWidget::~GameWidget()

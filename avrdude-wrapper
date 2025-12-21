@@ -1,0 +1,27 @@
+#!/bin/bash
+
+id="${1}"
+shift
+src_folder="${1}"
+shift
+banner="${1}"
+shift
+out_folder="${1}"
+
+if [[ "${out_folder}" == "" ]]; then
+  echo 'usage: avrdude-wrapper <id> <src-folder> <banner> <out-folder>'
+  echo 'e.g: avrdude-wrapper hopper /mnt/g/dev/Arduboy/ArduboyWorks/hopper/ /mnt/g/dev/Arduboy/ArduboyWorks/docs/img/hopper1.gif /mnt/g/dev/arduboy-manager/share/apps/'
+  exit 1
+fi
+
+export PATH="${PATH}:/home/auliyaa/dev/bin"
+
+mkdir -p "${out_folder}/${id}"
+ffmpeg -y -i "${banner}" "${out_folder}/${id}/banner.png"
+cd ${src_folder}
+arduino-cli compile --fqbn arduino:avr:micro --libraries ~/Arduino/libraries --verbose --output-dir ./build .
+for hex in ./build/*.ino.hex; do
+  cp "${hex}" "${out_folder}/${id}/app.hex"
+done
+
+echo ${out_folder}/${id}
