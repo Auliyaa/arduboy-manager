@@ -29,10 +29,9 @@ GameWidget::GameWidget(QString id, QWidget* parent, Qt::WindowFlags f)
     QPixmap px(_bannerPath);
     _ui->banner->setPixmap(px);
   }
-  else
-  {
-    _ui->banner->setText(id);
-  }
+  _ui->title->setText(id);
+
+  connect(_ui->installButton, &QPushButton::clicked, SoundEffects::HONK, &QSoundEffect::play);
 }
 
 GameWidget::~GameWidget()
@@ -48,6 +47,8 @@ void GameWidget::setCOMPort(QString p)
 void GameWidget::install()
 {
   emit installStarted();
+  
+  SoundEffects::WAIT->play();
 
   const auto& oldCOM = detectCOMPorts();
 
@@ -95,12 +96,15 @@ void GameWidget::avrdudeStderr()
 
 void GameWidget::avrdudeFinished(int code, QProcess::ExitStatus status)
 {
+  SoundEffects::WAIT->stop();
   if (code != 0)
   {
+    SoundEffects::FAIL->play();
     emit logError("process failed with code " + QString::number(code));
   }
   else
   {
+    SoundEffects::SUCCESS->play();
     emit logInfo("process exited with code " + QString::number(code));
   }
   emit installDone();

@@ -82,3 +82,48 @@ QString avrdudePath()
 {
    return avrdudeDirPath() + QDir::separator() + "avrdude.exe";
 }
+
+QString iconPath()
+{
+  return joinPath({
+    QApplication::applicationDirPath(),
+    "..",
+    "share",
+    "icon.bmp"
+  });
+}
+
+QSoundEffect* SoundEffects::HONK = nullptr;
+QSoundEffect* SoundEffects::MOO = nullptr;
+QSoundEffect* SoundEffects::SUCCESS = nullptr;
+QSoundEffect* SoundEffects::FAIL = nullptr;
+QSoundEffect* SoundEffects::WAIT = nullptr;
+
+void SoundEffects::init()
+{
+  const auto soundsPath = joinPath({
+    QApplication::applicationDirPath(),
+    "..",
+    "share",
+    "audio"
+  });
+
+  HONK = new QSoundEffect();
+  MOO = new QSoundEffect();
+  SUCCESS = new QSoundEffect();
+  FAIL = new QSoundEffect();
+  WAIT = new QSoundEffect();
+
+  HONK->setSource(QUrl::fromLocalFile(joinPath({soundsPath,"honk.wav"})));
+  MOO->setSource(QUrl::fromLocalFile(joinPath({soundsPath,"moo.wav"})));
+  SUCCESS->setSource(QUrl::fromLocalFile(joinPath({soundsPath,"success.wav"})));
+  FAIL->setSource(QUrl::fromLocalFile(joinPath({soundsPath,"fail.wav"})));
+  WAIT->setSource(QUrl::fromLocalFile(joinPath({soundsPath,"wait.wav"})));
+  WAIT->setLoopCount(std::numeric_limits<int>::max());
+
+  HONK->setVolume(1.0);
+  MOO->setVolume(1.0);
+  SUCCESS->setVolume(1.0);
+  FAIL->setVolume(1.0);
+  WAIT->setVolume(1.0);
+}

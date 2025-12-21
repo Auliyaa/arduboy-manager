@@ -2,6 +2,7 @@
 
 #include <QStringList>
 #include <QProcess>
+#include <QSoundEffect>
 
 static constexpr const quint16 VENDOR_ID = 0x2341;
 static constexpr const quint16 PRODUCT_ID1 = 0x8037;
@@ -14,3 +15,14 @@ QStringList detectCOMPorts();
 void qSleep(int delay);
 QString avrdudeDirPath();
 QString avrdudePath();
+QString iconPath();
+
+struct SoundEffects
+{
+  static QSoundEffect* HONK;
+  static QSoundEffect* MOO;
+  static QSoundEffect* SUCCESS;
+  static QSoundEffect* FAIL;
+  static QSoundEffect* WAIT;
+  static void init();
+};

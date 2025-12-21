@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
   _ui{new Ui::MainWindow}
 {
   _ui->setupUi(this);
+  setWindowIcon(QIcon(iconPath()));
+  connect(_ui->refreshButton, &QPushButton::clicked, SoundEffects::MOO, &QSoundEffect::play);
   
   for (const auto& id : QDir(appsPath()).entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name))
   {

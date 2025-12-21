@@ -43,6 +43,7 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ui)
 find_package(Qt6Core CONFIG REQUIRED)
 find_package(Qt6Gui CONFIG REQUIRED)
 find_package(Qt6Widgets CONFIG REQUIRED)
+find_package(Qt6Multimedia CONFIG REQUIRED)
 find_package(Qt6SerialPort CONFIG REQUIRED)
 
 qt_standard_project_setup()
@@ -73,6 +74,7 @@ target_link_libraries(arduboy-manager
     Qt6::Gui
     Qt6::Widgets
     Qt6::SerialPort
+    Qt6::Multimedia
 )
 
 set_target_properties(arduboy-manager PROPERTIES
@@ -82,10 +84,6 @@ set_target_properties(arduboy-manager PROPERTIES
 # --------------------------------------
 # install + Qt runtime deployment
 # --------------------------------------
-# install(TARGETS arduboy-manager
-#   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-# )
-
 qt_generate_deploy_app_script(
     TARGET arduboy-manager
     OUTPUT_SCRIPT arduboy_manager_QTDEPLOY_SCRIPT
@@ -93,23 +91,39 @@ qt_generate_deploy_app_script(
 )
 qt_finalize_executable(arduboy-manager)
 
-install(TARGETS arduboy-manager BUNDLE DESTINATION .)
+install(TARGETS 
+  arduboy-manager
+  BUNDLE DESTINATION .
+)
+
+if(MSVC)
+  install(FILES $<TARGET_PDB_FILE:arduboy-manager>
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    OPTIONAL
+  )
+endif()
+
 install(SCRIPT "${arduboy_manager_QTDEPLOY_SCRIPT}")
 
 install(DIRECTORY share/ DESTINATION share)
 
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-  install(PROGRAMS
-    ${CMAKE_BINARY_DIR}/zlibd1.dll
-    ${CMAKE_BINARY_DIR}/double-conversion.dll
-    ${CMAKE_BINARY_DIR}/pcre2-16d.dll
-    ${CMAKE_BINARY_DIR}/zstd.dll
-    ${CMAKE_BINARY_DIR}/harfbuzz.dll
-    ${CMAKE_BINARY_DIR}/libpng16d.dll
-    ${CMAKE_BINARY_DIR}/freetyped.dll
-    ${CMAKE_BINARY_DIR}/bz2d.dll
-    ${CMAKE_BINARY_DIR}/brotlidec.dll
-    ${CMAKE_BINARY_DIR}/brotlicommon.dll
-    DESTINATION ${CMAKE_INSTALL_BINDIR}
-  )
-endif()
+install(PROGRAMS
+  ${CMAKE_BINARY_DIR}/zlibd1.dll
+  ${CMAKE_BINARY_DIR}/zlib1.dll
+  ${CMAKE_BINARY_DIR}/double-conversion.dll
+  ${CMAKE_BINARY_DIR}/pcre2-16d.dll
+  ${CMAKE_BINARY_DIR}/pcre2-16.dll
+  ${CMAKE_BINARY_DIR}/zstd.dll
+  ${CMAKE_BINARY_DIR}/harfbuzz.dll
+  ${CMAKE_BINARY_DIR}/libpng16d.dll
+  ${CMAKE_BINARY_DIR}/libpng16.dll
+  ${CMAKE_BINARY_DIR}/freetyped.dll
+  ${CMAKE_BINARY_DIR}/freetype.dll
+  ${CMAKE_BINARY_DIR}/bz2d.dll
+  ${CMAKE_BINARY_DIR}/bz2.dll
+  ${CMAKE_BINARY_DIR}/brotlidec.dll
+  ${CMAKE_BINARY_DIR}/brotlicommon.dll
+  ${CMAKE_BINARY_DIR}/libcrypto-3-x64.dll
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
+  OPTIONAL
+)
