@@ -91,3 +91,11 @@ void MainWindow::log(const QString& s, const QColor& c)
   cursor.insertText(s + '\n', format);
   _ui->log->setTextCursor(cursor);
 }
+
+void MainWindow::filter(QString)
+{
+  for (auto* gw : _ui->gameWidgets->findChildren<GameWidget*>())
+  {
+    gw->setVisible(gw->id().contains(_ui->filterEdit->text()));
+  }
+}

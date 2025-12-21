@@ -10,7 +10,8 @@
 
 GameWidget::GameWidget(QString id, QWidget* parent, Qt::WindowFlags f)
   : QWidget(parent, f),
-  _ui{new Ui::GameWidget}
+  _ui{new Ui::GameWidget},
+  _id{id}
 {
   _ui->setupUi(this);
 
@@ -37,6 +38,11 @@ GameWidget::GameWidget(QString id, QWidget* parent, Qt::WindowFlags f)
 GameWidget::~GameWidget()
 {
   delete _ui;
+}
+
+QString GameWidget::id() const
+{
+  return _id;
 }
 
 void GameWidget::setCOMPort(QString p)

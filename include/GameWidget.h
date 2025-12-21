@@ -15,6 +15,7 @@ public:
   explicit GameWidget(QString id, QWidget* parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags());
   virtual ~GameWidget();
   void setCOMPort(QString);
+  QString id() const;
 
 protected slots:
   void install();
@@ -31,6 +32,7 @@ signals:
 private:
   Ui::GameWidget* _ui;
 
+  QString _id;
   QProcess* _avrdude{nullptr};
   QString _bannerPath;
   QString _hexPath;

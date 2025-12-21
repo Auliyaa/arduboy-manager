@@ -22,6 +22,7 @@ protected slots:
   void logError(QString);
   void log(const QString&, const QColor&);
   void comPortChanged();
+  void filter(QString);
 
 private:
   Ui::MainWindow* _ui;

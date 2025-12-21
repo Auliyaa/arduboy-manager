@@ -38,17 +38,11 @@
         <widget class="QComboBox" name="comPort"/>
        </item>
        <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
+        <widget class="QLineEdit" name="filterEdit">
+         <property name="placeholderText">
+          <string>C'EST LE FIFILTRE A PAPA OUI OUI OUI &lt;3</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>673</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -134,11 +128,28 @@ color: white;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>filterEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>filter(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>483</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>refreshCOM()</slot>
   <slot>installStarted()</slot>
   <slot>installDone()</slot>
   <slot>comPortChanged()</slot>
+  <slot>filter(QString)</slot>
  </slots>
 </ui>
