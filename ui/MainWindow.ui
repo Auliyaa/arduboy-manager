@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Arduboy</string>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -72,7 +75,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QTextEdit" name="textEdit">
+     <widget class="QTextEdit" name="log">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
         <horstretch>0</horstretch>
@@ -115,10 +118,27 @@ color: white;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>comPort</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>comPortChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>139</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>refreshCOM()</slot>
   <slot>installStarted()</slot>
   <slot>installDone()</slot>
+  <slot>comPortChanged()</slot>
  </slots>
 </ui>

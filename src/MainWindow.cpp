@@ -1,6 +1,5 @@
 #include <MainWindow.h>
 
-#include <QSerialPortInfo>
 #include <QDir>
 
 #include <utils.h>
@@ -13,15 +12,18 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
   _ui{new Ui::MainWindow}
 {
   _ui->setupUi(this);
-  refreshCOM();
-
+  
   for (const auto& id : QDir(appsPath()).entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name))
   {
     auto gw = new GameWidget(id, _ui->gameWidgets);
     _ui->gameWidgets->layout()->addWidget(gw);
-    connect(gw, SIGNAL(installStarted()), this, SLOT(installStarted()));
-    connect(gw, SIGNAL(installDone()), this, SLOT(installDone()));
+    connect(gw, &GameWidget::installStarted, this, &MainWindow::installStarted);
+    connect(gw, &GameWidget::installDone, this, &MainWindow::installDone);
+    connect(gw, &GameWidget::logInfo, this, &MainWindow::logInfo);
+    connect(gw, &GameWidget::logError, this, &MainWindow::logError);
   }
+
+  refreshCOM();
 }
 
 MainWindow::~MainWindow()
@@ -33,22 +35,21 @@ void MainWindow::refreshCOM()
 {
   _ui->comPort->blockSignals(true);
   _ui->comPort->clear();
-  for (const auto& info : QSerialPortInfo::availablePorts())
+  const auto ports = detectCOMPorts();
+  for (const auto& port : ports)
   {
-    if (!info.hasVendorIdentifier() || !info.hasProductIdentifier())
-    {
-      continue;
-    }
-
-    if (info.vendorIdentifier() == VENDOR_ID)
-    {
-      if (info.productIdentifier() == PRODUCT_ID1 || info.productIdentifier() == PRODUCT_ID2)
-      {
-        _ui->comPort->addItem(info.portName());
-      }
-    }
+    _ui->comPort->addItem(port);
   }
   _ui->comPort->blockSignals(false);
+  comPortChanged();
+}
+
+void MainWindow::comPortChanged()
+{
+  for (auto* gw : _ui->gameWidgets->findChildren<GameWidget*>())
+  {
+    gw->setCOMPort(_ui->comPort->currentText());
+  }
 }
 
 void MainWindow::installStarted()
@@ -61,5 +62,30 @@ void MainWindow::installStarted()
 
 void MainWindow::installDone()
 {
+  for (auto* gw : _ui->gameWidgets->findChildren<GameWidget*>())
+  {
+    gw->setEnabled(true);
+  }
+}
 
+void MainWindow::logInfo(QString s)
+{
+  log(s, QColor("white"));
+}
+
+void MainWindow::logError(QString s)
+{
+  log(s, QColor("red"));
+}
+
+void MainWindow::log(const QString& s, const QColor& c)
+{
+  QTextCursor cursor = _ui->log->textCursor();
+  cursor.movePosition(QTextCursor::End);
+
+  QTextCharFormat format;
+  format.setForeground(c);
+
+  cursor.insertText(s + '\n', format);
+  _ui->log->setTextCursor(cursor);
 }

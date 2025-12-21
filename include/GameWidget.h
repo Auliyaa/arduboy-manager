@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QProcess>
 
 namespace Ui
 {
@@ -13,17 +14,25 @@ class GameWidget: public QWidget
 public:
   explicit GameWidget(QString id, QWidget* parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags());
   virtual ~GameWidget();
+  void setCOMPort(QString);
 
 protected slots:
   void install();
+  void avrdudeStdout();
+  void avrdudeStderr();
+  void avrdudeFinished(int, QProcess::ExitStatus);
 
 signals:
   void installStarted();
   void installDone();
+  void logInfo(QString);
+  void logError(QString);
 
 private:
   Ui::GameWidget* _ui;
 
+  QProcess* _avrdude{nullptr};
   QString _bannerPath;
   QString _hexPath;
+  QString _comPort;
 };

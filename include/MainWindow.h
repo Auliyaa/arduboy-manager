@@ -18,6 +18,10 @@ protected slots:
   void refreshCOM();
   void installStarted();
   void installDone();
+  void logInfo(QString);
+  void logError(QString);
+  void log(const QString&, const QColor&);
+  void comPortChanged();
 
 private:
   Ui::MainWindow* _ui;
