@@ -1,6 +1,13 @@
-#include <iostream>
+#include <QApplication>
 
-int main()
+#include <MainWindow.h>
+
+int main(int argc, char** argv)
 {
-  std::cout << "j'aime le caca bien frais" << std::endl;
+  QApplication app(argc, argv);
+
+  MainWindow w;
+  w.show();
+
+  return app.exec();
 }

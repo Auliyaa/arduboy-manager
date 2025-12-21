@@ -3,10 +3,8 @@
 	"tasks": [
 		{
 			"label": "build (debug)",
-			"command": "jom",
-			"args": [
-				"install"
-			],
+			"command": "../.vscode/build-debug.bat",
+			"args": [ "install" ],
 			"options": {
 				"cwd": "${workspaceFolder}/build.debug"
 			},
@@ -17,32 +15,6 @@
 				"kind": "build",
 				"isDefault": true
 			}
-		},
-		{
-			"label": "build (release)",
-			"command": "jom",
-			"args": [
-				"install"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}/build.release"
-			},
-			"problemMatcher": [
-				"$msCompile"
-			],
-			"group": "build"
-		},
-		{
-			"label": "tests",
-			"command": "${workspaceFolder}/build.debug/libsuura/tests/suura-tests",
-			"args": [],
-			"options": {
-				"cwd": "${workspaceFolder}/build.debug"
-			},
-			"problemMatcher": [
-				"$gcc"
-			],
-			"group": "test"
 		}
 	]
 }
