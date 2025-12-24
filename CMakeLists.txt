@@ -52,6 +52,8 @@ qt_standard_project_setup()
 # arduboy-manager target
 # --------------------------------------
 add_executable(arduboy-manager
+  res/app.rc
+  
   src/main.cpp
   src/utils.cpp
 
